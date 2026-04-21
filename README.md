@@ -1,4 +1,4 @@
-🛡️ Trojan Attack Simulation Sandbox
+# 🛡️ Trojan Attack Simulation Sandbox
 📌 Overview
 
 This project is an interactive web-based sandbox that simulates a Trojan Horse attack scenario to demonstrate how sensitive user data (like card details and system files) can be compromised and monitored in real time.
