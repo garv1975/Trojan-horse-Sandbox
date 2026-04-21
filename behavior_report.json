@@ -1,0 +1,53 @@
+{
+    "timestamp": "2026-04-20 10:31:00",
+    "type": "Banking Trojan Simulation",
+    "victim": {
+        "username": "ashlesha",
+        "display_name": "Ashlesha Agrawal",
+        "email": "ashlesha@example.com"
+    },
+    "iocs": {
+        "network": [
+            {
+                "address": "192.168.0.99",
+                "port": 443,
+                "type": "Mock C2 Server"
+            },
+            {
+                "address": "127.0.0.1",
+                "port": 5000,
+                "type": "Local Application (Victim)"
+            }
+        ],
+        "files_accessed": [
+            "core/bank_data.txt",
+            "core/session_data.txt"
+        ],
+        "stolen_artifacts": [
+            "dump_1776313718.log",
+            "dump_1776329962.log",
+            "dump_1776612353.log",
+            "dump_1776612425.log",
+            "dump_1776612856.log",
+            "dump_1776612984.log",
+            "dump_1776615612.log",
+            "dump_1776617980.log",
+            "dump_1776657621.log",
+            "dump_1776657636.log",
+            "dump_1776661256.log"
+        ],
+        "encrypted_files": [
+            "passwords.txt.encrypted",
+            "personal_diary.txt.encrypted",
+            "project_notes.txt.encrypted"
+        ],
+        "malware_hashes": [
+            {
+                "algorithm": "MD5",
+                "hash": "d41d8cd98f00b204e9800998ecf8427e",
+                "desc": "Dummy Invoice Payload"
+            }
+        ]
+    },
+    "risk_level": "CRITICAL"
+}

@@ -1,0 +1,20 @@
+=== CAPTURED USER INPUT ===
+Username : xyz
+Password : 12345
+Card     : 12335564787
+Expiry   : 05/34
+CVV      : 765
+
+--- BANK DATA ---
+Name: Garv Sharma
+Card Number: 4111 1111 1111 1111
+Expiry: 12/28
+CVV: 123
+
+--- SESSION DATA ---
+SessionID: a1b2c3d4e5f6
+Username: garv
+Email: garv@example.com
+PasswordHash: 8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92 # ('test@123' sha256)
+LastLogin: 2026-04-15 00:00:00
+

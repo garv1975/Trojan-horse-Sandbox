@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <div class="px-8 py-6 bg-gray-50 border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900">Checkout</h2>
+            <p class="text-sm text-gray-500 mt-1">Welcome, <span class="font-semibold text-gray-700">{{ username }}</span>. Complete your order securely.</p>
+        </div>
+        
+        <form class="p-8" action="{{ url_for('checkout') }}" method="POST">
+            <!-- Selected Product Summary -->
+            <div class="flex items-center gap-4 mb-8 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <img src="{{ product.img }}" alt="{{ product.name }}" class="w-20 h-20 rounded-lg object-cover shadow-sm">
+                <div class="flex-grow">
+                    <h3 class="text-lg font-semibold text-gray-900">{{ product.name }}</h3>
+                    <p class="text-gray-500 text-sm">Premium Quality</p>
+                </div>
+                <span class="text-xl font-bold text-pink-600">{{ product.price }}</span>
+            </div>
+
+            <h3 class="text-lg font-medium text-gray-900 mb-6">Payment Details</h3>
+            
+            <div class="space-y-6">
+                <!-- Card Number -->
+                <div>
+                    <label for="card_number" class="block text-sm font-medium text-gray-700">Card Number</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                        </div>
+                        <input type="text" name="card_number" id="card_number" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="Enter card number" required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- Expiry -->
+                    <div>
+                        <label for="expiry" class="block text-sm font-medium text-gray-700">Expiration Date</label>
+                        <input type="text" name="expiry" id="expiry" class="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="MM/YY" required>
+                    </div>
+                    <!-- CVV -->
+                    <div>
+                        <label for="cvv" class="block text-sm font-medium text-gray-700">CVC</label>
+                        <input type="text" name="cvv" id="cvv" class="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" placeholder="123" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Autofill hint for demo -->
+            <div class="mt-4 bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                <p class="text-xs text-indigo-600">
+                    <span class="font-bold">Demo hint:</span> Try card <button type="button" onclick="document.getElementById('card_number').value='4111 1111 1111 1111'; document.getElementById('expiry').value='12/28'; document.getElementById('cvv').value='123';" class="underline hover:text-indigo-800">4111 1111 1111 1111</button> or enter any details — the Trojan captures whatever you type.
+                </p>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                    Total Payment: <span class="text-xl font-bold text-gray-900 ml-2">{{ product.price }}</span>
+                </div>
+                <button type="submit" class="bg-pink-600 border border-transparent rounded-md shadow-lg shadow-pink-500/30 py-3 px-8 inline-flex justify-center text-sm font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors">
+                    Pay Now
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

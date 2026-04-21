@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavior Report - Trojan Sandbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print { display: none !important; }
+            .print-border { border: 1px solid #e5e7eb !important; }
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans p-8">
+
+    <div class="max-w-4xl mx-auto bg-white p-10 shadow-2xl rounded-lg print-border">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-start border-b-2 border-red-600 pb-6 mb-8">
+            <div>
+                <h1 class="text-3xl font-extrabold text-red-700 uppercase tracking-tight">Post-Incident Behavior Report</h1>
+                <p class="text-gray-500 mt-1">Trojan Behavior Analysis Sandbox</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm font-bold text-gray-700">DATE: <span class="font-normal">{{ report.timestamp if report else "N/A" }}</span></p>
+                <button onclick="window.print()" class="no-print mt-3 bg-gray-800 text-white px-4 py-2 rounded shadow hover:bg-gray-700 transition">Save as PDF</button>
+            </div>
+        </div>
+
+        {% if not report %}
+            <div class="p-4 bg-yellow-50 text-yellow-800 border-l-4 border-yellow-500">
+                No report data found. Please run the simulation first.
+            </div>
+        {% else %}
+
+        <!-- Executive Summary -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold border-b border-gray-200 pb-2 mb-4">1. Executive Summary</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gray-50 p-4 rounded border border-gray-100">
+                    <p class="text-sm text-gray-500">THREAT CLASSIFICATION</p>
+                    <p class="font-bold text-lg text-gray-800">{{ report.type }}</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded border border-red-100">
+                    <p class="text-sm text-red-500 font-bold">RISK LEVEL</p>
+                    <p class="font-bold text-2xl text-red-700">{{ report.risk_level }}</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Threat Intelligence -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold border-b border-gray-200 pb-2 mb-4">2. Execution Profile</h2>
+            <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                <table class="w-full text-left text-sm">
+                    <tbody>
+                        {% for h in report.iocs.malware_hashes %}
+                        <tr>
+                            <th class="py-2 w-1/4 text-gray-600">Payload Hash ({{ h.algorithm }}):</th>
+                            <td class="py-2 font-mono text-gray-800">{{ h.hash }}</td>
+                        </tr>
+                        <tr>
+                            <th class="py-2 w-1/4 text-gray-600">Description:</th>
+                            <td class="py-2">{{ h.desc }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Network Indicators (C2) -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold border-b border-gray-200 pb-2 mb-4">3. Network Indicators (C2)</h2>
+            <ul class="list-disc pl-5 space-y-2">
+                {% for n in report.iocs.network %}
+                <li class="text-gray-800">
+                    Identified C2 transmission to <span class="font-mono bg-yellow-100 px-1 rounded text-red-600 font-bold">{{ n.address }}:{{ n.port }}</span> ({{ n.type }})
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- File System Impact -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold border-b border-gray-200 pb-2 mb-4">4. File System Impact (IOCs)</h2>
+            
+            <h3 class="font-bold text-md mb-2 text-indigo-700">Data Accessed / Stolen:</h3>
+            <ul class="list-none pl-0 space-y-1 mb-4 text-sm font-mono text-gray-700">
+                {% for f in report.iocs.files_accessed %}
+                <li class="bg-gray-50 p-2 border-l-2 border-indigo-400 inline-block w-full mb-1">Accessed: {{ f }}</li>
+                {% endfor %}
+                {% for f in report.iocs.stolen_artifacts %}
+                <li class="bg-gray-50 p-2 border-l-2 border-yellow-400 inline-block w-full mb-1">Exfiltrated via C2 to local dump: {{ f }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3 class="font-bold text-md mb-2 text-red-700 mt-6">Encrypted Files (Ransomware Behavior):</h3>
+            <ul class="list-none pl-0 space-y-1 text-sm font-mono text-gray-700">
+                {% if report.iocs.encrypted_files|length > 0 %}
+                    {% for ef in report.iocs.encrypted_files %}
+                    <li class="bg-red-50 p-2 border-l-2 border-red-500 inline-block w-full mb-1 text-red-900 line-through decoration-red-400">{{ ef | replace('.encrypted', '') }} <span class="no-underline ml-2 text-red-600 font-bold">[ENCRYPTED -> {{ ef }}]</span></li>
+                    {% endfor %}
+                {% else %}
+                    <li class="text-gray-500 italic">No files were encrypted.</li>
+                {% endif %}
+            </ul>
+        </section>
+
+        <!-- Footer -->
+        <div class="mt-12 text-center text-xs text-gray-400 border-t border-gray-200 pt-4">
+            CONFIDENTIAL - AUTOMATED SANDBOX REPORT
+        </div>
+
+        {% endif %}
+    </div>
+
+</body>
+</html>

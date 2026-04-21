@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Hero Banner -->
+    <div class="relative bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl p-8 mb-12 overflow-hidden shadow-xl text-white">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 relative z-10">Summer Sale Extravaganza</h1>
+        <p class="text-lg mb-6 relative z-10 opacity-90 max-w-xl">Get up to 50% off on all premium clothing. Upgrade your wardrobe today with our exclusive collection.</p>
+        <div class="absolute -right-20 -bottom-20 opacity-20 pointer-events-none">
+            <svg width="400" height="400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+        </div>
+    </div>
+
+    <!-- Flash message (e.g., "Please select a product first") -->
+    {% if msg %}
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded">
+        <p class="text-sm text-yellow-800 font-medium">{{ msg }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Product Grid -->
+    <div class="mb-6 flex justify-between items-end">
+        <h2 class="text-2xl font-bold text-gray-900">Trending Now</h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {% for p in products %}
+        <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100 overflow-hidden group">
+            <div class="h-64 overflow-hidden relative">
+                <img src="{{ p.img }}" alt="{{ p.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-300"></div>
+            </div>
+            <div class="p-5">
+                <h3 class="text-lg font-semibold text-gray-900 mb-1 truncate">{{ p.name }}</h3>
+                <p class="text-gray-500 text-sm mb-4">Premium Quality</p>
+                <div class="flex justify-between items-center">
+                    <span class="text-xl font-bold text-pink-600">{{ p.price }}</span>
+                    <a href="{{ url_for('buy', product_id=p.id) }}" class="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors">Buy Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
